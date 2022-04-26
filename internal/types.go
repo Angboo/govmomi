@@ -237,6 +237,10 @@ type RetrieveDynamicTypeManagerResponse struct {
 	Returnval *InternalDynamicTypeManager `xml:"urn:vim25 returnval"`
 }
 
+func init() {
+	types.Add("RetrieveDynamicTypeManager", reflect.TypeOf((*RetrieveDynamicTypeManagerRequest)(nil)).Elem())
+}
+
 type RetrieveManagedMethodExecuterRequest struct {
 	This types.ManagedObjectReference `xml:"_this"`
 }
@@ -267,4 +271,8 @@ type ExecuteSoapRequest struct {
 
 type ExecuteSoapResponse struct {
 	Returnval *ReflectManagedMethodExecuterSoapResult `xml:"urn:vim25 returnval"`
+}
+
+func init() {
+	types.Add("ExecuteSoap", reflect.TypeOf((*ExecuteSoapRequest)(nil)).Elem())
 }

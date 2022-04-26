@@ -17,10 +17,13 @@ limitations under the License.
 package simulator
 
 import (
+	"github.com/vmware/govmomi/govc/host/esxcli"
+	"github.com/vmware/govmomi/vim25/xml"
 	"net"
 	"os"
 	"time"
 
+	"github.com/vmware/govmomi/internal"
 	"github.com/vmware/govmomi/simulator/esx"
 	"github.com/vmware/govmomi/vim25/methods"
 	"github.com/vmware/govmomi/vim25/mo"
@@ -71,7 +74,6 @@ func NewHostSystem(host mo.HostSystem) *HostSystem {
 	cfg := new(types.HostConfigInfo)
 	deepCopy(hs.Config, cfg)
 	hs.Config = cfg
-
 	config := []struct {
 		ref **types.ManagedObjectReference
 		obj mo.Reference
@@ -79,6 +81,8 @@ func NewHostSystem(host mo.HostSystem) *HostSystem {
 		{&hs.ConfigManager.DatastoreSystem, &HostDatastoreSystem{Host: &hs.HostSystem}},
 		{&hs.ConfigManager.NetworkSystem, NewHostNetworkSystem(&hs.HostSystem)},
 		{&hs.ConfigManager.AdvancedOption, NewOptionManager(nil, esx.Setting)},
+		{&hs.ConfigManager.DateTimeSystem, NewHostDateTimeSystem(&hs.HostSystem)},
+		{&hs.ConfigManager.DateTimeSystem, NewHostServiceSystem(&hs.HostSystem)},
 		{&hs.ConfigManager.FirewallSystem, NewHostFirewallSystem(&hs.HostSystem)},
 		{&hs.ConfigManager.StorageSystem, NewHostStorageSystem(&hs.HostSystem)},
 	}
@@ -280,6 +284,34 @@ func (h *HostSystem) ExitMaintenanceModeTask(ctx *Context, spec *types.ExitMaint
 	return &methods.ExitMaintenanceMode_TaskBody{
 		Res: &types.ExitMaintenanceMode_TaskResponse{
 			Returnval: task.Run(ctx),
+		},
+	}
+}
+
+func (h *HostSystem) RetrieveManagedMethodExecuter(ctx *Context, req *internal.RetrieveManagedMethodExecuterRequest) soap.HasFault {
+	return &internal.RetrieveManagedMethodExecuterBody{
+		Req: req,
+		Res: &internal.RetrieveManagedMethodExecuterResponse{Returnval: &internal.ReflectManagedMethodExecuter{ManagedObjectReference: h.Self}},
+	}
+}
+func (h *HostSystem) RetrieveDynamicTypeManager(ctx *Context, req *internal.RetrieveDynamicTypeManagerRequest) soap.HasFault {
+	return &internal.RetrieveDynamicTypeManagerBody{
+		Req: req,
+		Res: &internal.RetrieveDynamicTypeManagerResponse{Returnval: &internal.InternalDynamicTypeManager{ManagedObjectReference: h.Self}},
+	}
+}
+func (h *HostSystem) ExecuteSoap(ctx *Context, req *internal.ExecuteSoapRequest) soap.HasFault {
+	// TODO: Returns different data for different Args
+	item := esxcli.CommandInfoItem{Name: "get", DisplayName: "get", Help: ""}
+	commandInfo, _ := xml.Marshal(esxcli.CommandInfo{Method: []*esxcli.CommandInfoMethod{
+		&esxcli.CommandInfoMethod{CommandInfoItem: item},
+	}})
+	return &internal.ExecuteSoapBody{
+		Req: req,
+		Res: &internal.ExecuteSoapResponse{
+			Returnval: &internal.ReflectManagedMethodExecuterSoapResult{
+				Response: string(commandInfo),
+			},
 		},
 	}
 }

@@ -221,7 +221,10 @@ func main() {
 			log.Fatal(err)
 		}
 	}
-
+	mos := simulator.Map.AllReference("")
+	for mo := range mos {
+		println(mos[mo].Reference().Type + ":" + mos[mo].Reference().Value)
+	}
 	fmt.Fprintf(out, "export GOVC_URL=%s GOVC_SIM_PID=%d\n", s.URL, os.Getpid())
 	if out != os.Stdout {
 		err = out.Close()

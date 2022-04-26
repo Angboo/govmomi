@@ -284,6 +284,9 @@ func (cmd *save) Run(ctx context.Context, f *flag.FlagSet) error {
 							Name: "hostNetworkSystemTraversalSpec",
 						},
 						&types.SelectionSpec{
+							Name: "hostDateTimeSystemTraversalSpec",
+						},
+						&types.SelectionSpec{
 							Name: "hostVirtualNicManagerTraversalSpec",
 						},
 						&types.SelectionSpec{
@@ -314,6 +317,13 @@ func (cmd *save) Run(ctx context.Context, f *flag.FlagSet) error {
 					},
 					Type: "HostSystem",
 					Path: "configManager.networkSystem",
+				},
+				&types.TraversalSpec{
+					SelectionSpec: types.SelectionSpec{
+						Name: "hostDateTimeSystemTraversalSpec",
+					},
+					Type: "HostSystem",
+					Path: "configManager.dateTimeSystem",
 				},
 				&types.TraversalSpec{
 					SelectionSpec: types.SelectionSpec{
@@ -350,6 +360,7 @@ func (cmd *save) Run(ctx context.Context, f *flag.FlagSet) error {
 			{Type: "HostDatastoreBrowser", All: all},
 			{Type: "HostDatastoreSystem", All: all},
 			{Type: "HostNetworkSystem", All: all},
+			{Type: "HostDateTimeSystem", All: all},
 			{Type: "HostVirtualNicManager", All: all},
 			{Type: "OptionManager", All: all},
 			{Type: "ManagedEntity", All: all},

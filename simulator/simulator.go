@@ -140,7 +140,6 @@ func (s *Service) call(ctx *Context, method *Method) soap.HasFault {
 	handler := ctx.Map.Get(method.This)
 	session := ctx.Session
 	ctx.Caller = &method.This
-
 	if ctx.Map.Handler != nil {
 		h, fault := ctx.Map.Handler(ctx, method)
 		if fault != nil {
