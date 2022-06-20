@@ -7,15 +7,15 @@ require (
 	github.com/dougm/pretty v0.0.0-20171025230240-2ee9d7453c02
 	github.com/google/uuid v1.3.0
 	github.com/rasky/go-xdr v0.0.0-20170217172119-4930550ba2e2
-	github.com/stretchr/testify v1.7.1
+	github.com/stretchr/testify v1.7.3
 	github.com/vmware/vmw-guestinfo v0.0.0-20170707015358-25eff159a728
 )
 
 require (
-	github.com/davecgh/go-spew v1.1.0 // indirect
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/kr/pretty v0.3.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
