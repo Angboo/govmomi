@@ -73,7 +73,7 @@ jobs:
           retention-days: 1
 
       - name: Build Artifacts
-        uses: goreleaser/goreleaser-action@v2
+        uses: goreleaser/goreleaser-action@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
